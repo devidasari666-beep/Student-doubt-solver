@@ -1,0 +1,143 @@
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background-color: #121212;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e; /* dark background */
+  padding: 15px 20px;
+}
+.showing-text {
+  color: #ccc;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+/* Logo text */
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Right section (search + buttons together) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Search input */
+.nav-right input {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+/* Search button */
+.nav-right button {
+  background-color: #1f3ad1;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Post a Doubt button */
+.post-btn {
+  background-color: #007bff; /* blue highlight */
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.filters{
+    background-color: #1e1e1e;
+display: flex;
+justify-content: flex-start;
+align-items: center;
+ padding: 10px 20px;
+  gap:10px;
+}
+.filters button{
+    background-color: rgb(38, 38, 146);
+    padding: 8px 14px;
+     border-radius: 10px;
+     color: white;
+     border: none;
+    cursor: pointer;
+}
+/* Container for all cards */
+.cards {
+  display: grid;
+  grid-template-columns: 3;
+  gap: 20px;
+  padding: 20px;
+ 
+}
+
+/* Individual card */
+.card {
+    
+  background-color: #1e1e1e; /* dark background */
+  padding: 20px;
+  border-radius: 6px;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+   margin-bottom: 5px;
+}
+
+/* Category label */
+.card span {
+  display: inline-block;
+  font-weight: bold;
+
+  margin-bottom: 8px;
+}
+.Maths{
+       background-color: green;
+    color: white;
+    padding: 5px;
+    border-radius: 30px;
+}
+.Physics{
+       background-color: rgb(40, 40, 134);
+    color: white;
+    padding: 5px;
+    border-radius: 30px;
+}
+.Programming{
+       background-color: rgb(74, 30, 119);
+    color: white;
+    padding: 5px;
+    border-radius: 30px;
+}
+.card p {
+  font-size: 14px;
+  color: #ccc;
+  margin: 4px 0;
+}
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #ccc;
+  margin-top: 12px;
+}
+
+.card p:first-of-type {
+  font-size: 16px;
+  color: #fff; 
+  margin: 8px 0;
+}
