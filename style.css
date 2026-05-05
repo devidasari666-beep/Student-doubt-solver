@@ -141,3 +141,103 @@ align-items: center;
   color: #fff; 
   margin: 8px 0;
 }
+.post{
+  color: white;
+ font-size: 22px;
+  font-weight: bold;
+   margin-bottom: 10px;
+}
+p{
+   color: #bbb;
+}
+.asterik { color: red; }
+.ques{
+  color: white;
+}
+.form-card textarea {
+  width: 100%;
+  background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  padding: 12px;
+  height: 120px;
+}
+
+.tip {
+ 
+  border-left: 3px solid #007bff;
+    margin-bottom: 20px;
+  padding-left: 10px;
+
+}
+.form-card select{
+  width: 100%;
+    background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #fff;
+  padding: 10px 12px;
+}
+.form-group {
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+.btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+  border-top: 1px solid #2a2a2a;
+  padding-top: 20px;
+   flex-wrap: wrap;
+}
+.askques{
+  margin-top: 10px;
+   margin-bottom: 15px;
+}
+.cancel{
+   padding: 8px 16px;
+  border-radius: 10px;
+
+color: white;
+ cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #555;
+}
+.submit{
+   padding: 8px 16px;
+  border-radius: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+   cursor: pointer;
+  
+}
+.form-card {
+   width: 90%;
+  max-width: 600px;
+  margin: 80px auto;  
+  padding: 35px;     
+  background-color: #1e1e1e; 
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+}
+.form-card textarea:focus,
+.form-card select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+.form-card textarea,
+.form-card select {
+  margin-top: 8px;
+}
+.form-card textarea,
+.form-card select { background: #111; }
+.submit:hover {
+  background-color: #0056d2;
+}
+
+.cancel:hover {
+  background-color: #333;
+}
