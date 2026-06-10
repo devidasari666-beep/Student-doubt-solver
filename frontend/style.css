@@ -165,7 +165,15 @@ align-items: center;
   color: #ccc;
   margin-top: 12px;
 }
-
+.cards {
+  max-width: 750px;
+  margin: 0 auto;
+}
+.showing-text {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 10px 20px;
+}
 .card p:first-of-type {
   font-size: 16px;
   color: #fff; 

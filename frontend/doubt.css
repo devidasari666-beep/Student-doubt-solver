@@ -3,9 +3,10 @@
 color:  #1f3ad1;
 margin-bottom: 10px;
 }
-.doubt-page{
-     padding: 20px;
-   
+.doubt-page {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 20px;
 }
 .badge-maths{
      background-color: green;
