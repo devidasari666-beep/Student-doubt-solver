@@ -1,3 +1,5 @@
+let allDoubts = [];
+
 function timeAgo(dateString) {
   const now = new Date();
   const past = new Date(dateString);
@@ -17,8 +19,22 @@ async function getDoubts() {
   const res = await fetch('/api/doubts');
   const data = await res.json();
 
+  allDoubts = data;   // store globally
+  displaydoubts(allDoubts);
+}
+
+function displaydoubts(data) {
+    
   const display_cards = document.querySelector(".cards");
   display_cards.innerHTML = "";
+ if (!data || data.length === 0) {
+    display_cards.innerHTML = `
+      <div class="no-data">
+        No doubts found 😕
+      </div>
+    `;
+    return;
+  }
 
   data.forEach(element => {
     const card = document.createElement("div");
@@ -43,4 +59,16 @@ async function getDoubts() {
     display_cards.appendChild(card);
   });
 }
+
+function filterdoubts(category) {
+  if (category === "All") {
+    displaydoubts(allDoubts);
+  } else {
+    const filtered = allDoubts.filter(
+      d => d.subject === category
+    );
+    displaydoubts(filtered);
+  }
+}
+
 getDoubts();

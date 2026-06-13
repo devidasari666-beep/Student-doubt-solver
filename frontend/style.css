@@ -296,3 +296,29 @@ color: white;
   margin-top: 20px;
   margin-bottom: 16px;
 }
+.no-data {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 20px;
+
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+
+  color: #a9a9a9;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+
+  position: relative;
+}
+
+
+
+
+/* lighter highlight text (optional span inside message) */
+.no-data span {
+  color: #c0c0c0;
+  font-weight: 500;
+}
