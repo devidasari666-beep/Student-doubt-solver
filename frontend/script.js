@@ -19,7 +19,7 @@ async function getDoubts() {
   const res = await fetch('/api/doubts');
   const data = await res.json();
 
-  allDoubts = data;   // store globally
+  allDoubts = data;   
   displaydoubts(allDoubts);
 }
 
@@ -70,5 +70,24 @@ function filterdoubts(category) {
     displaydoubts(filtered);
   }
 }
+async function handlesubmit() {
+    
+  const question = document.getElementById("questionbox").value
+  const subject = document.getElementById("subjectbox").value
+if (!question || !subject) {
+  alert("Please fill in all fields!")
+  return
+}
+  const response = await fetch("/api/doubts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question, subject })
+  })
 
-getDoubts();
+  const data = await response.json()
+  alert("Doubt posted successfully!")
+  window.location.href = "/" // redirect to home after posting
+}
+if (document.querySelector(".cards")) {
+  getDoubts();
+}

@@ -24,12 +24,12 @@
         <p class="tip">💡 Be specific in your question. Good questions get answered faster.</p>
         <div class="form-group">
   <p class="ques">Your Question<span class="asterik">*</span></p>
-  <textarea placeholder="Type your doubt clearly..."></textarea>
+  <textarea id="questionbox" placeholder="Type your doubt clearly..."></textarea>
 </div>
 
 <div class="form-group">
   <p class="ques">Subject<span class="asterik">*</span></p>
-  <select>
+  <select id="subjectbox">
     <option value="">-- Select a subject --</option>
     <option>Programming</option>
     <option>Maths</option>
@@ -39,9 +39,10 @@
 </div>
 <div class="btn">
     <button class="cancel">Cancel</button>
-         <button class="submit">Submit Doubt</button>
+         <button class="submit" onclick="handlesubmit()">Submit Doubt</button>
 </div>
          
      </div>
 </body>
 </html>
+<script src="script.js"></script>
