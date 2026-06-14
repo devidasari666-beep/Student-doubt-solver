@@ -314,7 +314,20 @@ color: white;
   position: relative;
 }
 
+.delete-btn {
+  background-color: transparent;
+  border: 1px solid #e74c3c;
+  color: #a9a9a9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
 
+.delete-btn:hover {
+  background-color: #e74c3c;
+  color: white;
+}
 
 
 /* lighter highlight text (optional span inside message) */

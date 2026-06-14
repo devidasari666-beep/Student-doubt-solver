@@ -38,6 +38,7 @@ router.post("/", (req, res) => {
     res.json({ message: "Doubt inserted successfully" });
   });
 });
+//search for a doubt
 router.get('/:id',(req,res)=>{
   const id=req.params.id;
   const sql="SELECT * FROM doubts WHERE id=?";
@@ -75,4 +76,29 @@ router.get('/:id/answers', (req, res) => {
     res.json(results);
   });
 });
+router.delete('/:id', (req, res) => {
+  const id = req.params.id
+
+  // Step 1 — delete answers first
+  const deleteAnswers = "DELETE FROM answers WHERE doubt_id = ?"
+  
+  db.query(deleteAnswers, [id], (err) => {
+    if (err) {
+      console.error(err)
+      return res.status(500).json({ error: "Database error" })
+    }
+
+    // Step 2 — then delete the doubt
+    const deleteDoubt = "DELETE FROM doubts WHERE id = ?"
+    
+    db.query(deleteDoubt, [id], (err, result) => {
+      if (err) {
+        console.error(err)
+        return res.status(500).json({ error: "Database error" })
+      }
+
+      res.json({ message: "Doubt deleted successfully" })
+    })
+  })
+})
 module.exports = router;
