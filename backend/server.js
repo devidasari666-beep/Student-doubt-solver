@@ -7,16 +7,19 @@ const app = express();
 
 app.use(express.json());
 
-// Serve frontend
+// Serve frontend (optional, if you have frontend files in ../frontend)
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Root route for Railway health check
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.send('API is running!');
 });
 
 // Use doubt routes
 app.use('/api/doubts', doubtRoutes);
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+// Use Railway’s dynamic port
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
