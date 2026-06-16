@@ -3,102 +3,101 @@ const db = require("../db");
 
 const router = express.Router();
 
-// GET all doubts
-router.get("/", (req, res) => {
+// Get all doubts with answer count
+router.get("/", async (req, res) => {
   const sql = `
-    SELECT 
-      doubts.*,
-      COUNT(answers.id) AS answers_count
+    SELECT doubts.*, COUNT(answers.id) AS answers_count
     FROM doubts
-    LEFT JOIN answers 
-      ON answers.doubt_id = doubts.id
+    LEFT JOIN answers ON answers.doubt_id = doubts.id
     GROUP BY doubts.id
+    ORDER BY doubts.created_at DESC
   `;
 
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    }
-
+  try {
+    const [results] = await db.query(sql);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Error fetching doubts:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
 });
-router.post("/", (req, res) => {
-  const { question, subject } = req.body;
 
+// Post a new doubt
+router.post("/", async (req, res) => {
+  const { question, subject } = req.body;
   const sql = "INSERT INTO doubts (question, subject) VALUES (?, ?)";
 
-  db.query(sql, [question, subject], (err, result) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    }
-
+  try {
+    await db.query(sql, [question, subject]);
     res.json({ message: "Doubt inserted successfully" });
-  });
+  } catch (err) {
+    console.error("Error inserting doubt:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
 });
-//search for a doubt
-router.get('/:id',(req,res)=>{
-  const id=req.params.id;
-  const sql="SELECT * FROM doubts WHERE id=?";
-  db.query(sql,[id],(err,result)=>{
-    if(err){
-      console.log(err);
-       return res.status(500).json({ error: "Database error" });
-    }
-     res.json(result);
-  });
-});
-router.post('/:id/answers',(req,res)=>{
-  const doubt_id=req.params.id;
-  const answer_text=req.body.answer_text;
-  const sql="INSERT INTO answers (doubt_id,answer_text) VALUES (?,?)";
-  db.query(sql,[doubt_id,answer_text],(err,result)=>{
-     if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    }
 
-    res.json({ message: "Doubt inserted successfully" });
-  });
+// Get a single doubt by id
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  const sql = "SELECT * FROM doubts WHERE id = ?";
+
+  try {
+    const [result] = await db.query(sql, [id]);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Doubt not found" });
+    }
+    res.json(result[0]); // Send back single object directly
+  } catch (err) {
+    console.error("Error getting single doubt:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
 });
-// GET all answers for a specific doubt
-router.get('/:id/answers', (req, res) => {
+
+// Submit an answer for a doubt
+router.post('/:id/answers', async (req, res) => {
+  const doubt_id = req.params.id;
+  const { answer_text } = req.body;
+  const sql = "INSERT INTO answers (doubt_id, answer_text) VALUES (?, ?)";
+
+  try {
+    await db.query(sql, [doubt_id, answer_text]);
+    res.json({ message: "Answer submitted successfully" });
+  } catch (err) {
+    console.error("Error submitting answer:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
+});
+
+// Get all answers for a single doubt
+router.get('/:id/answers', async (req, res) => {
   const doubt_id = req.params.id;
   const sql = "SELECT * FROM answers WHERE doubt_id = ?";
 
-  db.query(sql, [doubt_id], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Database error" });
-    }
+  try {
+    const [results] = await db.query(sql, [doubt_id]);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Error getting answers:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
 });
-router.delete('/:id', (req, res) => {
-  const id = req.params.id
 
-  // Step 1 — delete answers first
-  const deleteAnswers = "DELETE FROM answers WHERE doubt_id = ?"
-  
-  db.query(deleteAnswers, [id], (err) => {
-    if (err) {
-      console.error(err)
-      return res.status(500).json({ error: "Database error" })
-    }
+// Delete a doubt and its replies
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id;
+  const deleteAnswers = "DELETE FROM answers WHERE doubt_id = ?";
+  const deleteDoubt = "DELETE FROM doubts WHERE id = ?";
 
-    // Step 2 — then delete the doubt
-    const deleteDoubt = "DELETE FROM doubts WHERE id = ?"
-    
-    db.query(deleteDoubt, [id], (err, result) => {
-      if (err) {
-        console.error(err)
-        return res.status(500).json({ error: "Database error" })
-      }
+  try {
+    // Must clear answers foreign key dependancies first to avoid SQL errors
+    await db.query(deleteAnswers, [id]);
+    await db.query(deleteDoubt, [id]);
 
-      res.json({ message: "Doubt deleted successfully" })
-    })
-  })
-})
+    res.json({ message: "Doubt deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting doubt:", err);
+    res.status(500).json({ error: "Database failure" });
+  }
+});
+
 module.exports = router;

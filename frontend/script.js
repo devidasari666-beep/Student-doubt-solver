@@ -16,11 +16,15 @@ function timeAgo(dateString) {
 }
 
 async function getDoubts() {
-  const res = await fetch('/api/doubts');     
-  const data = await res.json();             //returns array
-
-  allDoubts = data;   
-  displaydoubts(allDoubts);
+  try {
+    const res = await fetch('/api/doubts')
+    const data = await res.json()
+    allDoubts = data
+    displaydoubts(allDoubts)
+  } catch (err) {
+    console.error(err)
+    alert("Failed to load doubts!")
+  }
 }
 
 function displaydoubts(data) {
@@ -57,11 +61,24 @@ card.onclick = () => {
         <span>💬 ${answerText}</span>
         <span>posted ${postedTime}</span>
       </div>
-       <button class="delete-btn" onclick="deleteDoubt(event, ${element.id})">
-    Delete
-  </button>
+      <button class="delete-btn">Delete</button>
     `;
+const deleteBtn = card.querySelector(".delete-btn");
+    deleteBtn.onclick = async (event) => {
+      event.stopPropagation(); // Block card background navigation click trigger
+      
+      const confirmDelete = confirm("Are you sure you want to delete this doubt?");
+      if (!confirmDelete) return;
 
+      try {
+        const res = await fetch(`/api/doubts/${element.id}`, { method: "DELETE" });
+        const resData = await res.json();
+        alert(resData.message || "Deleted successfully");
+        getDoubts(); // reload UI contents
+      } catch (err) {
+        console.error("Delete request error:", err);
+      }
+    };
     display_cards.appendChild(card);
   });
 }
@@ -76,6 +93,7 @@ function filterdoubts(category) {
     displaydoubts(filtered);
   }
 }
+
 async function handlesubmit() {
     
   const question = document.getElementById("questionbox").value
@@ -85,6 +103,7 @@ if (!question || !subject) {
   alert("Please fill in all fields!")
   return
 }
+try{
   const response = await fetch("/api/doubts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -93,11 +112,18 @@ if (!question || !subject) {
 
   const data = await response.json()
   alert("Doubt posted successfully!")
+  document.getElementById("questionbox").value = ""
+document.getElementById("subjectbox").value = ""
   window.location.href = "/" // redirect to home after posting
+}catch(err){
+  console.error(err)
+    alert("Failed to load doubts!")
+}
 }
 if (document.querySelector(".cards")) {
   getDoubts();
 }
+
 function searchDoubts(data){
  const searchText = document.getElementById("searchInput").value.toLowerCase();
 
@@ -107,20 +133,4 @@ function searchDoubts(data){
 
   displaydoubts(filtered);
 }
-async function deleteDoubt(event, id) {
-  event.stopPropagation(); // prevents card redirect click
 
-  const confirmDelete = confirm("Are you sure you want to delete this doubt?");
-  if (!confirmDelete) return;
-
-  const res = await fetch(`/api/doubts/${id}`, {
-    method: "DELETE"
-  });
-
-  const data = await res.json();
-
-  alert(data.message || "Deleted successfully");
-
-  // refresh list after delete
-  getDoubts();
-}
