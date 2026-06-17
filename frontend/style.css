@@ -292,10 +292,7 @@ color: white;
   display: flex;
   justify-content: space-between;
 }
-.showing-text {
-  margin-top: 20px;
-  margin-bottom: 16px;
-}
+
 .no-data {
   text-align: center;
   padding: 30px 20px;
